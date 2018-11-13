@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-
+import json
 
 class Core_Base:
     def __init__(self):
@@ -9,7 +9,8 @@ class Core_Base:
         self.part = ""
         self.arr = []
         self.mean =[]
-        
+        self.data = {}
+
     #checks for every word using loop
     def words(self):
         # self.alpha = "abcdefghijklmnopqrstuvwxyz- "
@@ -34,18 +35,30 @@ class Core_Base:
         bsobj = BeautifulSoup(html.read(), 'lxml')
         self.arr.append(self.word) 
         self.section = bsobj.findAll("section", {"class": "gramb"})
+        self.data[self.word] = []
         for i in self.section:
+            
             self.span = i.find_all("span",{"class" : "pos"})
             for name in self.span:
-                self.mean.append(name.get_text())
+                self.part = name.get_text()
+                # self.mean.append(name.get_text())
             self.trg = i.find_all("div", {"class":"trg"})
             for j in self.trg:
                 self.ind = j.find_all("span", {"class": "ind"})
+                # print(self.ind)
                 for details in self.ind:
                     self.mean.append(details.get_text())
-        self.arr.append(self.mean)
-        mean = []
-        print(self.arr)
+            self.arr.append(self.mean)
+
+            self.data[self.word].append({
+                self.part: self.mean
+            })
+            self.mean = []
+        print(self.data)
+        with open('test.txt', 'w') as outfile:
+            json.dump(self.data, outfile) 
+
+
 
 obj = Core_Base()
 obj.words()
