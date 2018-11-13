@@ -17,9 +17,11 @@ class Core_Base:
         # for i in self.alpha:
         self.word = input("Enter a word:")
         self.format ="https://en.oxforddictionaries.com/definition/" + self.word
-        # ch = self.check()
-        # if(ch == "True"):
-        self.search_for_meaning(self.format)
+        ch = self.check()
+        if(ch == True):
+            self.search_for_meaning(self.format)
+        else:
+            print("Not Valid")
 
     #checks if the word starts or ends with space or hypen
     def check(self):
@@ -35,9 +37,10 @@ class Core_Base:
         bsobj = BeautifulSoup(html.read(), 'lxml')
         self.arr.append(self.word) 
         self.section = bsobj.findAll("section", {"class": "gramb"})
-        self.data[self.word] = []
+
+        self.data[self.word] = []                                   #initialise the data[] for the particular word
+        #collects the meaning of the word from the web
         for i in self.section:
-            
             self.span = i.find_all("span",{"class" : "pos"})
             for name in self.span:
                 self.part = name.get_text()
@@ -50,13 +53,14 @@ class Core_Base:
                     self.mean.append(details.get_text())
             self.arr.append(self.mean)
 
-            self.data[self.word].append({
+            self.data[self.word].append({                           #append the data[] with different meanings
                 self.part: self.mean
             })
             self.mean = []
         print(self.data)
-        with open('test.txt', 'w') as outfile:
+        with open('test.txt', 'a') as outfile:
             json.dump(self.data, outfile) 
+            outfile.write('\n')
 
 
 
