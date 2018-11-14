@@ -11,7 +11,6 @@ class Core_Base:
         self.part = ""
         self.arr = []
         self.mean =[]
-        self.data = {}
         self.trg = ""
         self.ind = ""
         self.p = ""
@@ -22,11 +21,6 @@ class Core_Base:
         try:
             html = urlopen(self.format)
             self.search_for_meaning(self.format)
-            # ch = self.check()
-            # if(ch == True):
-                # self.search_for_meaning(self.format)
-            # else:
-                # print("Not Valid")
         except HTTPError as e:
             print(e)
         except URLError as e:
@@ -37,8 +31,9 @@ class Core_Base:
 
     def pass_words(self):
 
-        file = open("words.txt", "r")
+        file = open("wordss.txt", "r")
         self.count = 0
+        self.data = {}
 
         for line in file:
             self.__init__()
@@ -49,15 +44,11 @@ class Core_Base:
             print(self.count)
             self.words_p()
             time.sleep(3)
+        with open('test.json', 'a') as outfile:
+            json.dump(self.data, outfile) 
+            outfile.close()
+            print("Reached")
         file.close()
-
-    #checks if the word starts or ends with space or hypen
-    # def check(self):
-    #     w_len = len(self.word)
-    #     if self.word[0] == ' ' or self.word[0] == '-' or self.word[w_len-1] == ' ' or self.word[w_len-1] == '-':
-    #         return False
-    #     else:
-    #         return True
     
     #searches and stores the meaning of the particular word
     def search_for_meaning(self,url):
@@ -89,14 +80,10 @@ class Core_Base:
             self.mean = []
         self.arr_len = len(self.arr)
         # print(self.data)
-
-        if self.arr_len > 1:
-            with open('test.json', 'a') as outfile:
-                json.dump(self.data, outfile) 
-                outfile.write(',')
-                outfile.close()
-        else:
-            print("Reached")
+        self.data_len = len(self.data[self.word])
+        # print(self.data_len)
+        if self.data_len < 1:
+            del self.data[self.word]
 
 
 
