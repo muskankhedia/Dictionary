@@ -89,13 +89,12 @@ class Core_Base:
             self.mean = []
         self.arr_len = len(self.arr)
         # print(self.data)
-        
+
         if self.arr_len > 1:
             with open('test.json', 'a') as outfile:
                 json.dump(self.data, outfile) 
                 outfile.write(',')
                 outfile.close()
-
         else:
             print("Reached")
 
