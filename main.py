@@ -26,7 +26,7 @@ class Core_Base:
         except URLError as e:
             print("the server could not be found")
         else:
-            print("It worked !")
+            print(self.count)
         
 
     def pass_words(self):
@@ -44,7 +44,6 @@ class Core_Base:
             self.length = len(self.word)
             self.word = self.word[0:self.length-1]
             self.count += 1
-            print(self.count)
             self.words_p()
             time.sleep(3)
         
