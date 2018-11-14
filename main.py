@@ -84,12 +84,21 @@ class Core_Base:
                 self.part: self.mean
             })
             self.mean = []
+        self.arr_len = len(self.arr)
         print(self.data)
-        with open('test.txt', 'a') as outfile:
-            json.dump(self.data, outfile) 
-            outfile.write('\n')
-            outfile.close()
-    
+
+        if self.arr_len > 1:
+            with open('test.txt', 'a') as outfile:
+                json.dump(self.data, outfile) 
+                outfile.write('\n')
+                outfile.close()
+        else:
+            print("Reached")
+            self.data[self.word].append("Meaning not found")                        
+            with open('test.txt', 'a') as outfile:
+                json.dump(self.data, outfile) 
+                outfile.write('\n')
+                outfile.close()
 
 
 
