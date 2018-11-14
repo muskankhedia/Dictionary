@@ -1,7 +1,9 @@
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from urllib.error import URLError
 from bs4 import BeautifulSoup
 import json
+import time
 
 class Core_Base:
     def __init__(self):
@@ -16,38 +18,43 @@ class Core_Base:
 
     #checks for every word using loop
     def words_p(self):
-        # self.alpha = "abcdefghijklmnopqrstuvwxyz- "
-        # for i in range(0,46):
-        #     for j in range (0,i):
-
-        # self.word = input("Enter a word:")
         self.format ="https://en.oxforddictionaries.com/definition/" + self.word
         try:
             html = urlopen(self.format)
-        except HTTPError as e:
-            return None 
-        
-        ch = self.check()
-        if(ch == True):
             self.search_for_meaning(self.format)
+            # ch = self.check()
+            # if(ch == True):
+                # self.search_for_meaning(self.format)
+            # else:
+                # print("Not Valid")
+        except HTTPError as e:
+            print(e)
+        except URLError as e:
+            print("the server could not be found")
         else:
-            print("Not Valid")
+            print("It worked !")
+        
 
     def pass_words(self):
-        
-        self.alpha = "abcdefghijklmnopqrstuvwxyz- "
-        for i in self.alpha:
+
+        file = open("words.txt", "r")
+
+        for line in file:
             self.__init__()
-            self.word = i
+            self.word = line
+            self.length = len(self.word)
+            self.word = self.word[0:self.length-1]
             self.words_p()
+            time.sleep(10)
+        file.close()
 
     #checks if the word starts or ends with space or hypen
-    def check(self):
-        w_len = len(self.word)
-        if self.word[0] == ' ' or self.word[0] == '-' or self.word[w_len-1] == ' ' or self.word[w_len-1] == '-':
-            return False
-        else:
-            return True
+    # def check(self):
+    #     w_len = len(self.word)
+    #     if self.word[0] == ' ' or self.word[0] == '-' or self.word[w_len-1] == ' ' or self.word[w_len-1] == '-':
+    #         return False
+    #     else:
+    #         return True
     
     #searches and stores the meaning of the particular word
     def search_for_meaning(self,url):
@@ -81,11 +88,14 @@ class Core_Base:
         with open('test.txt', 'a') as outfile:
             json.dump(self.data, outfile) 
             outfile.write('\n')
+            outfile.close()
+    
 
 
 
 obj = Core_Base()
 obj.pass_words()
+
 
 
 

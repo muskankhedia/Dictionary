@@ -1,6 +1,7 @@
 # from urllib.request import urlopen
 # from urllib.error import HTTPError
 # from bs4 import BeautifulSoup
+# import time 
 
 # def gettitle(url):
 #     try:
@@ -16,6 +17,8 @@
 #         #     str_span = str(span_ele)
 #         #     cleantext = BeautifulSoup(str_span, "lxml").get_text()
 #         #     print(cleantext) 
+#         print("x")
+#         time.sleep(25)
 #         namelist = bsobj.findAll("span", {"class": "pos"})
 #         for name in namelist:
 #             print(name.get_text())
@@ -30,13 +33,18 @@
 # else:
 #     print(title)
 
-import threading
-interval = 15
+# import threading
+# interval = 15
 
-def myPeriodicFunction():
-    print ("This loops on a timer every %d seconds" % interval)
+# def myPeriodicFunction():
+#     print ("This loops on a timer every %d seconds" % interval)
 
-def startTimer():
-    threading.Timer(interval, startTimer).start()
-    myPeriodicFunction()
-startTimer()
+# def startTimer():
+#     threading.Timer(interval, startTimer).start()
+#     myPeriodicFunction()
+# startTimer()
+
+file = open("test.txt", "r")
+for line in file:
+    print(line)
+    print("sadsdkfhks")
