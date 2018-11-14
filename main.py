@@ -10,18 +10,36 @@ class Core_Base:
         self.arr = []
         self.mean =[]
         self.data = {}
+        self.trg = ""
+        self.ind = ""
+        self.p = ""
 
     #checks for every word using loop
-    def words(self):
+    def words_p(self):
         # self.alpha = "abcdefghijklmnopqrstuvwxyz- "
-        # for i in self.alpha:
-        self.word = input("Enter a word:")
+        # for i in range(0,46):
+        #     for j in range (0,i):
+
+        # self.word = input("Enter a word:")
         self.format ="https://en.oxforddictionaries.com/definition/" + self.word
+        try:
+            html = urlopen(self.format)
+        except HTTPError as e:
+            return None 
+        
         ch = self.check()
         if(ch == True):
             self.search_for_meaning(self.format)
         else:
             print("Not Valid")
+
+    def pass_words(self):
+        
+        self.alpha = "abcdefghijklmnopqrstuvwxyz- "
+        for i in self.alpha:
+            self.__init__()
+            self.word = i
+            self.words_p()
 
     #checks if the word starts or ends with space or hypen
     def check(self):
@@ -47,10 +65,12 @@ class Core_Base:
                 # self.mean.append(name.get_text())
             self.trg = i.find_all("div", {"class":"trg"})
             for j in self.trg:
-                self.ind = j.find_all("span", {"class": "ind"})
-                # print(self.ind)
-                for details in self.ind:
-                    self.mean.append(details.get_text())
+                self.p = j.find_all("p")
+                for k in self.p:
+                    self.ind = k.find_all("span", {"class": "ind"})
+                    # print(self.ind)
+                    for details in self.ind:
+                        self.mean.append(details.get_text())
             self.arr.append(self.mean)
 
             self.data[self.word].append({                           #append the data[] with different meanings
@@ -65,7 +85,7 @@ class Core_Base:
 
 
 obj = Core_Base()
-obj.words()
+obj.pass_words()
 
 
 
