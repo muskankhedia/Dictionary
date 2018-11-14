@@ -31,7 +31,10 @@ class Core_Base:
 
     def pass_words(self):
 
-        file = open("wordss.txt", "r")
+        self.file_name = input("Enter the file name: ")
+        self.file_json = self.file_name + ".json"
+        self.file_name = self.file_name + ".txt"
+        file = open(self.file_name, "r")
         self.count = 0
         self.data = {}
 
@@ -44,7 +47,8 @@ class Core_Base:
             print(self.count)
             self.words_p()
             time.sleep(3)
-        with open('test.json', 'a') as outfile:
+        
+        with open(self.file_json, 'a') as outfile:
             json.dump(self.data, outfile) 
             outfile.close()
             print("Reached")
