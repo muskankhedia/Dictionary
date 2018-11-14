@@ -1,8 +1,3 @@
 {"2": [{"noun": ["A rocket-powered flying bomb which was the first ballistic missile, used by the Germans in the Second World War."]}]}
-{"1080": ["Meaning not found"]}
 {"&c": [{"abbreviation": ["Care of."]}]}
 {"10-point": [{"noun": ["The ten most popular songs or recordings in the popular music charts."]}]}
-{"10th": ["Meaning not found"]}
-{"11-point": [{"proper noun": []}]}
-{"12-point": [{"noun": ["The commonest natural carbon isotope, of mass 12. It is the basis for the accepted scale of atomic mass units."]}]}
-{"16-point": [{"adjective": ["Designating or relating to education after the age of sixteen."]}]}

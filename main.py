@@ -45,7 +45,7 @@ class Core_Base:
             self.length = len(self.word)
             self.word = self.word[0:self.length-1]
             self.words_p()
-            time.sleep(10)
+            time.sleep(3)
         file.close()
 
     #checks if the word starts or ends with space or hypen
@@ -94,11 +94,6 @@ class Core_Base:
                 outfile.close()
         else:
             print("Reached")
-            self.data[self.word].append("Meaning not found")                        
-            with open('test.txt', 'a') as outfile:
-                json.dump(self.data, outfile) 
-                outfile.write('\n')
-                outfile.close()
 
 
 
