@@ -38,12 +38,15 @@ class Core_Base:
     def pass_words(self):
 
         file = open("words.txt", "r")
+        self.count = 0
 
         for line in file:
             self.__init__()
             self.word = line
             self.length = len(self.word)
             self.word = self.word[0:self.length-1]
+            self.count += 1
+            print(self.count)
             self.words_p()
             time.sleep(3)
         file.close()
@@ -85,13 +88,14 @@ class Core_Base:
             })
             self.mean = []
         self.arr_len = len(self.arr)
-        print(self.data)
-
+        # print(self.data)
+        
         if self.arr_len > 1:
-            with open('test.txt', 'a') as outfile:
+            with open('test.json', 'a') as outfile:
                 json.dump(self.data, outfile) 
-                outfile.write('\n')
+                outfile.write(',')
                 outfile.close()
+
         else:
             print("Reached")
 
