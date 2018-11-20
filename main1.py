@@ -9,14 +9,13 @@ class Core_Base:
     def __init__(self):
         self.word = ""
         self.part = ""
-        self.mean =[]
+        self.mean =""
         self.trg = ""
         self.ind = ""
         self.p = ""
         self.ex = ""
-        self.mean_exp = []
-        self.submean = []
-
+        self.example =""
+        self.mean_ex = {}
     #checks for every word using loop
     def words_p(self):
         self.format ="https://en.oxforddictionaries.com/definition/" + self.word
@@ -33,10 +32,10 @@ class Core_Base:
 
     def pass_words(self):
 
-        # self.file_name = input("Enter the file name: ")
-        # self.file_json = self.file_name + ".json"
-        # self.file_name = self.file_name + ".txt"
-        file = open('wordss.txt', "r")
+        self.file_name = input("Enter the file name: ")
+        self.file_json = self.file_name + ".json"
+        self.file_name = self.file_name + ".txt"
+        file = open(self.file_name, "r")
         self.count = 0
         self.data = {}
 
@@ -49,7 +48,7 @@ class Core_Base:
             self.words_p()
             time.sleep(3)
         
-        with open('wordss.json', 'a') as outfile:
+        with open(self.file_json, 'a') as outfile:
             json.dump(self.data, outfile) 
             outfile.close()
             print("Reached")
@@ -58,44 +57,43 @@ class Core_Base:
     #searches and stores the meaning of the particular word
     def search_for_meaning(self,url):
         html = urlopen(url)
-        bsobj = BeautifulSoup(html.read(), 'lxml') 
+        bsobj = BeautifulSoup(html.read(), 'lxml')
         self.section = bsobj.findAll("section", {"class": "gramb"})
 
-        self.data[self.word] = []                                   #initialise the data[] for the particular word
+        self.data[self.word] = [] 
+                                                       #initialise the data[] for the particular word
         #collects the meaning of the word from the web
         for i in self.section:
             self.span = i.find_all("span",{"class" : "pos"})
             for name in self.span:
                 self.part = name.get_text()
+                print(type(self.part))
                 # self.mean.append(name.get_text())
-            self.mean_exp[self.part] = []
             self.trg = i.find_all("div", {"class":"trg"})
-            # print(self.trg)
-            for j in self.trg: 
+            self.mean_ex[self.part] = []
+            for j in self.trg:
                 self.p = j.find_all("p")
                 for k in self.p:
+                    self.ex =""
                     self.ind = k.find_all("span", {"class": "ind"})
                     # print(self.ind)
-
                     for details in self.ind:
-                        self.mean = details.get_text()
-
-                    self.ex = j.find("div", {"class":"ex"}).get_text()
-                    print(self.ex)
-
-                self.mean_exp[self.part].append({
+                        self.mean = (details.get_text())
+                    self.ex = j.find("div", {"class" : "ex"})
+                    self.example = str(self.ex)  
+                    print(self.example)      
+                    # if(self.ex === "None"):
+                    # for examples in self.ex:
+                    #         # self.example = examples.get_text()
+                    #     print(examples)
+                self.mean_ex[self.part].append({                           #append the data[] with different meanings
                     "meaning": self.mean,
-                    "example":self.ex
+                    "example": self.example
                 })
-                print(self.mean_exp)
-                # for l in self.ex:
-                #     em = l.find("em")
-                #     print(em.get_text()) 
-
-            self.data[self.word].append({                           #append the data[] with different meanings
-                self.part: self.mean_exp[self.part]
-            })
-        # print(self.data)
+                print(self.mean_ex[self.part])
+                self.mean = ""
+        self.data[self.word].append(self.mean_ex)                           #append the data[] with different meanings
+                
         self.data_len = len(self.data[self.word])
         # print(self.data_len)
         if self.data_len < 1:
@@ -105,14 +103,3 @@ class Core_Base:
 
 obj = Core_Base()
 obj.pass_words()
-
-
-
-
-
-
-
-
-
-
-
