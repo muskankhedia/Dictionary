@@ -16,6 +16,7 @@ class Core_Base:
         self.ex = ""
         self.example =""
         self.mean_ex = {}
+
     #checks for every word using loop
     def words_p(self):
         self.format ="https://en.oxforddictionaries.com/definition/" + self.word
@@ -67,12 +68,12 @@ class Core_Base:
             self.span = i.find_all("span",{"class" : "pos"})
             for name in self.span:
                 self.part = name.get_text()
-                print(type(self.part))
                 # self.mean.append(name.get_text())
             self.trg = i.find_all("div", {"class":"trg"})
             self.mean_ex[self.part] = []
             for j in self.trg:
                 self.p = j.find_all("p")
+                self.mean = ""
                 for k in self.p:
                     self.ex =""
                     self.ind = k.find_all("span", {"class": "ind"})
@@ -80,17 +81,12 @@ class Core_Base:
                     for details in self.ind:
                         self.mean = (details.get_text())
                     self.ex = j.find("div", {"class" : "ex"})
-                    self.example = str(self.ex)  
-                    print(self.example)      
-                    # if(self.ex === "None"):
-                    # for examples in self.ex:
-                    #         # self.example = examples.get_text()
-                    #     print(examples)
-                self.mean_ex[self.part].append({                           #append the data[] with different meanings
-                    "meaning": self.mean,
-                    "example": self.example
-                })
-                print(self.mean_ex[self.part])
+                    self.example = str(self.ex)        
+                if (str(self.mean) != ""):
+                    self.mean_ex[self.part].append({                           #append the data[] with different meanings
+                        "meaning": self.mean,
+                        "example": self.example
+                    })
                 self.mean = ""
         self.data[self.word].append(self.mean_ex)                           #append the data[] with different meanings
                 
