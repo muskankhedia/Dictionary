@@ -16,6 +16,11 @@ class Core_Base:
         self.ex = ""
         self.example =""
         self.mean_ex = {}
+        self.subsense =""
+        self.submean = ""
+        self.subex = ""
+        self.submean_ex = {}
+        self.sub_len = 0
 
     #checks for every word using loop
     def words_p(self):
@@ -62,7 +67,7 @@ class Core_Base:
         self.section = bsobj.findAll("section", {"class": "gramb"})
 
         self.data[self.word] = [] 
-                                                       #initialise the data[] for the particular word
+                                                       
         #collects the meaning of the word from the web
         for i in self.section:
             self.span = i.find_all("span",{"class" : "pos"})
@@ -81,14 +86,33 @@ class Core_Base:
                     for details in self.ind:
                         self.mean = (details.get_text())
                     self.ex = j.find("div", {"class" : "ex"})
-                    self.example = str(self.ex)        
-                if (str(self.mean) != ""):
-                    self.mean_ex[self.part].append({                           #append the data[] with different meanings
+                    self.example = str(self.ex)       
+                    self.example = self.example[25:-12] 
+                # if (str(self.mean) != ""):
+                    self.mean_ex[self.part].append({                           
                         "meaning": self.mean,
                         "example": self.example
                     })
+                    self.ex = ""
+                    self.submean_ex[self.part] = []
+                    self.subsense = j.find_all("li", {"class" : "subSense"})
+                    for details in self.subsense:
+                        self.submean = details.find("span", {"class" : "ind"})
+                        self.submean = str(self.submean)
+                        self.submean = self.submean[18:-7]
+                        self.ex = details.find("div", {"class" : "ex"})
+                        self.subex = str(self.ex)
+                        self.subex = self.subex[22:-12]
+                        self.submean_ex[self.part].append({
+                            "subMeaning": self.submean,
+                            "subExample": self.subex
+                        })
+                    self.sub_len = (len(self.submean_ex[self.part]))    
+                    if(self.sub_len != 0):
+                        self.mean_ex[self.part].append(self.submean_ex[self.part])
+                
                 self.mean = ""
-        self.data[self.word].append(self.mean_ex)                           #append the data[] with different meanings
+        self.data[self.word].append(self.mean_ex)                           
                 
         self.data_len = len(self.data[self.word])
         # print(self.data_len)
